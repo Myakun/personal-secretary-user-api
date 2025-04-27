@@ -1,0 +1,40 @@
+services:
+  api-app:
+    container_name: api-app-${APP_ENV}
+    build:
+      context: .
+      dockerfile: ./docker/api-app/Dockerfile
+    env_file: .env
+    extra_hosts:
+      - "mongodb01.ordercube.loc:10.2.0.240"
+      - "mongodb02.ordercube.loc:10.2.0.241"
+      - "mongodb-advisor.ordercube.loc:10.2.0.242"
+    volumes:
+      - ./cmd:/app/cmd
+      - ./internal:/app/internal
+    ports:
+      - "${APP_API_PORT}:${APP_API_PORT}"
+    restart: unless-stopped
+    network_mode: bridge
+  websocket-app:
+    container_name: websocket-app-${APP_ENV}
+    build:
+      context: .
+      dockerfile: ./docker/websocket-app/Dockerfile
+    env_file: .env
+    extra_hosts:
+      - "mongodb01.ordercube.loc:10.2.0.240"
+      - "mongodb02.ordercube.loc:10.2.0.241"
+      - "mongodb-advisor.ordercube.loc:10.2.0.242"
+    volumes:
+      - ./cmd:/app/cmd
+      - ./internal:/app/internal
+    ports:
+        - "${APP_WEBSOCKET_PORT}:${APP_WEBSOCKET_PORT}"
+    restart: unless-stopped
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

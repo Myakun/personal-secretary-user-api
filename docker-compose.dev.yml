@@ -1,0 +1,27 @@
+services:
+ app-with-air:
+    container_name: guest-app-with-air-${APP_ENV}
+    image: cosmtrek/air
+    working_dir: /app
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    volumes:
+      - ./:/app
+    restart: unless-stopped
+ swagger-ui:
+    container_name: guest-app-swagger-ui-${APP_ENV}
+    image: swaggerapi/swagger-ui
+    ports:
+      - "${SWAGGER_PORT}:8080"
+    environment:
+      - URL=/swagger.yaml
+    volumes:
+      - ./api/docs/swagger.yaml:/usr/share/nginx/html/swagger.yaml
+    networks:
+      - app-network
+    depends_on:
+      - app-with-air
+
+networks:
+  app-network:
+    driver: bridge
