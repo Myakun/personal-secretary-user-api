@@ -21,6 +21,10 @@ func (logger *Logger) Critical(msg string) {
 	fmt.Println("\033[31mCRITICAL\033[0m: " + msg)
 }
 
+func (logger *Logger) CriticalWithLogTag(msg string, logTag string) {
+	fmt.Println("\u001B[31mCRITICAL\u001B[0m [" + logTag + "]: " + msg)
+}
+
 func (logger *Logger) Debug(msg string) {
 	fmt.Println("DEBUG: " + msg)
 }

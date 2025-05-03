@@ -1,5 +1,7 @@
 package user
 
 const (
-	tableName = "users"
+	NameMaxLength = 50
+	NameMinLength = 3
+	TableName     = "users"
 )

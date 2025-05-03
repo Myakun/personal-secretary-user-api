@@ -4,10 +4,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"personal-secretary-user-ap/internal/api/handler"
 	"personal-secretary-user-ap/internal/api/handler/register"
+	"personal-secretary-user-ap/internal/api/middleware"
 )
 
 func GetRouter() *gin.Engine {
 	router := gin.Default()
+
+	router.Use(middleware.ResponseLogger())
 
 	router.GET("/", handler.Home)
 

@@ -1,7 +1,6 @@
 package user
 
 import (
-	"errors"
 	"fmt"
 	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/crypto/bcrypt"
@@ -17,20 +16,38 @@ type userService struct {
 	userValidator  *userValidator
 }
 
+func ConvertUserToDTo(user *User) *UserDTO {
+	return &UserDTO{
+		Email: user.GetEmail(),
+		Id:    user.GetId(),
+		Name:  user.GetName(),
+	}
+}
+
 func (service *userService) CreateUser(user *User) (*User, error) {
-	isValid, err := service.userValidator.Validate(user)
-	if !isValid {
+	err := service.userValidator.Validate(user)
+	if nil != err {
 		return nil, err
 	}
 
-	//passwordHash, err := service.HashPassword(user.GetPassword())
+	passwordHash, err := service.HashPassword(user.GetPassword())
+	if nil != err {
+		return nil, fmt.Errorf("failed to hash password: %w", err)
+	}
 
-	return nil, nil
+	user.SetPassword(passwordHash)
+
+	user, err = service.userRepository.insert(user)
+	if nil != err {
+		return nil, fmt.Errorf("failed to create user: %w", err)
+	}
+
+	user.setIsInserted(true)
+
+	return user, nil
 }
 
 func (service *userService) FindOneByEmail(email string) (*User, error) {
-	return nil, errors.New("not implemented")
-
 	entity, err := service.userRepository.FindOneByEmail(email)
 	if nil != err {
 		return nil, fmt.Errorf("failed to find user by email: %w", err)
@@ -41,6 +58,10 @@ func (service *userService) FindOneByEmail(email string) (*User, error) {
 
 func (service *userService) HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if nil != err {
+		return "", err
+	}
+
 	return string(bytes), err
 }
 
@@ -59,7 +80,7 @@ func InitUserService(db *mongo.Database) {
 
 		userServiceInstance = &userService{
 			userRepository: &userRepository{
-				collection:    db.Collection(tableName),
+				collection:    db.Collection(TableName),
 				loggerService: logger.GetLoggerService(),
 			},
 			userValidator: GetUserValidator(),

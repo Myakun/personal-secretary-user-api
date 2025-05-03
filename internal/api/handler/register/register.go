@@ -1,13 +1,17 @@
 package register
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"personal-secretary-user-ap/internal/common/entity"
+	userEntityPackage "personal-secretary-user-ap/internal/entity/user"
 	"personal-secretary-user-ap/internal/service/logger"
 	"personal-secretary-user-ap/internal/service/user"
 )
 
 const (
+	ErrorCodeEmailExists     = "email_exists"
 	ErrorCodeInvalidEmail    = "invalid_email"
 	ErrorCodeInvalidInput    = "invalid_input"
 	ErrorCodeInvalidPassword = "invalid_password"
@@ -37,23 +41,32 @@ func Register(context *gin.Context) {
 	})
 
 	if nil != err {
-		switch err {
-		case user.ErrorInvalidEmail:
-			errorResponse(context, ErrorCodeInvalidEmail)
-			return
-		case user.ErrorInvalidPassword:
-			errorResponse(context, ErrorCodeInvalidPassword)
-			return
-		default:
-			loggerService.DebugWithLogTag("Failed to register user: "+err.Error(), RegisterHandlerLogTag)
-			context.Status(http.StatusInternalServerError)
-			return
+		var validationErr *entity.ValidationError
+		if errors.As(err, &validationErr) {
+			switch {
+			case errors.Is(validationErr, userEntityPackage.ValidationErrorInvalidEmail):
+				errorResponse(context, ErrorCodeInvalidEmail)
+				return
+			case errors.Is(validationErr, userEntityPackage.ValidationErrorEmailAlreadyExists):
+				errorResponse(context, ErrorCodeEmailExists)
+				return
+			case errors.Is(validationErr, userEntityPackage.ValidationErrorInvalidPassword):
+				errorResponse(context, ErrorCodeInvalidPassword)
+				return
+			default:
+				loggerService.CriticalWithLogTag("Unknown validation error: "+validationErr.Error(), RegisterHandlerLogTag)
+				context.Status(http.StatusBadRequest)
+				return
+			}
 		}
+
+		loggerService.DebugWithLogTag("Failed to register user: "+err.Error(), RegisterHandlerLogTag)
+		context.Status(http.StatusInternalServerError)
+		return
 	}
 
-	// ✅ Passed validation
-	// Here you would typically create user in database, generate token etc.
-	context.JSON(http.StatusOK, registeredUser)
+	dto := userEntityPackage.ConvertUserToDTo(registeredUser)
+	context.JSON(http.StatusOK, dto)
 }
 
 func errorResponse(context *gin.Context, error string) {

@@ -1,16 +1,10 @@
 package user
 
 import (
-	"errors"
 	"fmt"
 	userEntityPackage "personal-secretary-user-ap/internal/entity/user"
 	"personal-secretary-user-ap/internal/service/logger"
 	"sync"
-)
-
-var (
-	ErrorInvalidEmail    = errors.New("invalid email")
-	ErrorInvalidPassword = errors.New("invalid password")
 )
 
 var userServiceInstance *userService

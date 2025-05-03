@@ -15,6 +15,7 @@ var initUserValidatorOnce sync.Once
 var (
 	ValidationErrorEmailAlreadyExists = errors.New("email_already_exists")
 	ValidationErrorInvalidEmail       = errors.New("invalid_email")
+	ValidationErrorInvalidName        = errors.New("invalid_name")
 	ValidationErrorInvalidPassword    = errors.New("invalid_password")
 )
 
@@ -22,39 +23,57 @@ type userValidator struct {
 	loggerService *logger.Logger
 }
 
-func (validator *userValidator) Validate(user *User) (bool, error) {
-	_, err := validator.ValidateEmail(user.GetEmail(), user)
+func (validator *userValidator) Validate(user *User) error {
+	err := validator.ValidateName(user.GetName())
 	if nil != err {
-		return false, err
+		return err
 	}
 
-	return true, nil
+	err = validator.ValidatePassword(user.GetPassword())
+	if nil != err {
+		return err
+	}
+
+	err = validator.ValidateEmail(user.GetEmail(), user)
+	if nil != err {
+		return err
+	}
+
+	return nil
 }
 
-func (validator *userValidator) ValidateEmail(email string, user *User) (bool, error) {
+func (validator *userValidator) ValidateEmail(email string, user *User) error {
 	if !commonValidator.ValidateEmail(email) {
-		return false, entity.NewValidationError(ValidationErrorInvalidEmail)
+		return entity.NewValidationError(ValidationErrorInvalidEmail)
 	}
 
 	existingUser, err := GetUserService().FindOneByEmail(email)
 	if nil != err {
-		return false, fmt.Errorf("failed to validate user email: %w", err)
+		return fmt.Errorf("failed to validate user email: %w", err)
 	}
 
 	if nil != existingUser && (nil == user || user.GetId() != existingUser.GetId()) {
-		return false, entity.NewValidationError(ValidationErrorEmailAlreadyExists)
+		return entity.NewValidationError(ValidationErrorEmailAlreadyExists)
 	}
 
-	return true, nil
+	return nil
 }
 
-func (validator *userValidator) ValidatePassword(password string) (bool, error) {
-	// TODO: Implement strong password validation logic
-	if len(password) < 6 {
-		return false, ValidationErrorInvalidPassword
+func (validator *userValidator) ValidateName(name string) error {
+	if len(name) < NameMinLength || len(name) > NameMaxLength {
+		return entity.NewValidationError(ValidationErrorInvalidName)
 	}
 
-	return true, nil
+	return nil
+}
+
+func (validator *userValidator) ValidatePassword(password string) error {
+	// TODO: Implement strong password validation logic
+	if len(password) < 6 {
+		return entity.NewValidationError(ValidationErrorInvalidPassword)
+	}
+
+	return nil
 }
 
 //goland:noinspection GoExportedFuncWithUnexportedType

@@ -1,19 +1,15 @@
 package application
 
 import (
-	"errors"
 	"fmt"
 	"github.com/joho/godotenv"
 	"log"
-	"personal-secretary-user-ap/internal/common/entity"
 	"personal-secretary-user-ap/internal/entity/accesstoken"
 	"personal-secretary-user-ap/internal/entity/user"
 	"personal-secretary-user-ap/internal/service/logger"
 	appUser "personal-secretary-user-ap/internal/service/user"
 	"sync"
 )
-
-const Version = "1.0.0"
 
 type application struct {
 	config    *config
@@ -93,19 +89,6 @@ func GetInstance(envFile *string) (*application, error) {
 
 		// Initialize app services
 		appUser.InitUserService()
-
-		userEntity := user.NewUser("ss@ss.ss", "", "ss", "ss")
-		userEntity, err = user.GetUserService().CreateUser(userEntity)
-		if nil != err {
-			var validationErr *entity.ValidationError
-			if errors.As(err, &validationErr) {
-				fmt.Println("Validation error:", err)
-			} else {
-				fmt.Println("Other error:", err)
-			}
-			getInstanceError = fmt.Errorf("failed to create user: %w", err)
-			return
-		}
 	})
 
 	return applicationInstance, getInstanceError
