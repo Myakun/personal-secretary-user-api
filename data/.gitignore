@@ -1,2 +1,3 @@
-mongodb/*
+_mongodb/*
+_mongodbtest/*
 !.gitignore
