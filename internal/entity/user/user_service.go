@@ -56,6 +56,19 @@ func (service *userService) FindOneByEmail(email string) (*User, error) {
 	return entity, nil
 }
 
+func (service *userService) FindOneById(id string) (*User, error) {
+	entity, err := service.userRepository.FindOneById(id)
+	if nil != err {
+		return nil, fmt.Errorf("failed to find user by id: %w", err)
+	}
+
+	return entity, nil
+}
+
+func (service *userService) VerifyPassword(hashedPassword, password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+}
+
 func (service *userService) HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if nil != err {

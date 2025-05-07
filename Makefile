@@ -12,3 +12,7 @@ docker-rebuild-test:
 	docker compose -f docker-compose-test.yml --env-file .env.test stop
 	docker compose -f docker-compose-test.yml --env-file .env.test build
 	docker compose -f docker-compose-test.yml --env-file .env.test up -d --remove-orphans
+
+go-tool-coverage:
+	go test -coverpkg=./internal/... -coverprofile=coverage.out ./...
+	go tool cover -html=coverage.out

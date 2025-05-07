@@ -17,6 +17,10 @@ func (logger *Logger) Fatal(msg string) {
 	fmt.Println("\033[31mFatal\033[0m: " + msg)
 }
 
+func (logger *Logger) FatalWithLogTag(msg string, logTag string) {
+	fmt.Println("FATAL [" + logTag + "]: " + msg)
+}
+
 func (logger *Logger) Critical(msg string) {
 	fmt.Println("\033[31mCRITICAL\033[0m: " + msg)
 }

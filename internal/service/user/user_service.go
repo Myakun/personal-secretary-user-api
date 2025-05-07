@@ -14,12 +14,6 @@ type userService struct {
 	logger *logger.Logger
 }
 
-type RegisterUserRequest struct {
-	Email    string
-	Name     string
-	Password string
-}
-
 func (service *userService) Register(request RegisterUserRequest) (*userEntityPackage.User, error) {
 	userEntity := userEntityPackage.NewUser(request.Email, "", request.Name, request.Password)
 	userEntity, err := userEntityPackage.GetUserService().CreateUser(userEntity)
