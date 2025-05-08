@@ -12,6 +12,12 @@ type config struct {
 
 	Env string `envconfig:"APP_ENV" required:"true"`
 
+	JWT struct {
+		Secret               string `envconfig:"APP_JWT_SECRET" required:"true" default:"your-secret-key"`
+		ExpirationMin        int    `envconfig:"APP_JWT_EXPIRATION_MIN" default:"60"`
+		RefreshExpirationDay int    `envconfig:"APP_JWT_REFRESH_EXPIRATION_DAY" default:"30"`
+	}
+
 	Mongo struct {
 		Database string `envconfig:"APP_MONGO_DATABASE" required:"true"`
 		Host     string `envconfig:"APP_MONGO_HOST" required:"true"`

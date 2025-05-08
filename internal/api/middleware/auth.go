@@ -1,42 +1,61 @@
 package middleware
 
 import (
-	"github.com/gin-gonic/gin"
+	"errors"
 	"net/http"
-	"personal-secretary-user-ap/internal/entity/accesstoken"
 	"strings"
+
+	"github.com/gin-gonic/gin"
+	jwtPkg "personal-secretary-user-ap/internal/common/jwt"
+)
+
+// UserContext keys
+const (
+	UserIDKey = "user_id"
+	EmailKey  = "email"
 )
 
 // AuthMiddleware is a middleware that validates the Bearer token in the Authorization header
-func AuthMiddleware() gin.HandlerFunc {
+func AuthMiddleware(jwtSecret string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
-		if "" == authHeader {
-			c.AbortWithStatus(http.StatusUnauthorized)
+		if authHeader == "" {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "authorization header is required"})
 			return
 		}
 
-		token := strings.TrimPrefix(authHeader, "Bearer ")
-		if "" == token {
-			c.AbortWithStatus(http.StatusUnauthorized)
+		// Check if the Authorization header has the correct format
+		parts := strings.Split(authHeader, " ")
+		if len(parts) != 2 || parts[0] != "Bearer" {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "invalid authorization header format"})
 			return
 		}
 
-		accessTokenService := accesstoken.GetAccessTokenService()
-		accessToken, err := accessTokenService.FindOneByToken(token)
-		if nil != err {
-			// TODO: Log CRITICAL
-			// TODO: Idea about monitoring: send stat to grafana? And grafana send alert its critical part
-			c.AbortWithStatus(http.StatusUnauthorized)
+		// Extract the token
+		tokenString := parts[1]
+
+		// Validate the token
+		claims, err := jwtPkg.ValidateToken(tokenString, jwtSecret)
+		if err != nil {
+			var statusCode int
+			var errorMessage string
+
+			switch {
+			case errors.Is(err, jwtPkg.ErrExpiredToken):
+				statusCode = http.StatusUnauthorized
+				errorMessage = "token has expired"
+			default:
+				statusCode = http.StatusUnauthorized
+				errorMessage = "invalid token"
+			}
+
+			c.AbortWithStatusJSON(statusCode, gin.H{"error": errorMessage})
 			return
 		}
 
-		if nil == accessToken {
-			c.AbortWithStatus(http.StatusUnauthorized)
-			return
-		}
-
-		c.Set("accessToken", accessToken)
+		// Set user information in the context
+		c.Set(UserIDKey, claims.UserID)
+		c.Set(EmailKey, claims.Email)
 
 		c.Next()
 	}

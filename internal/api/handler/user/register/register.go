@@ -3,13 +3,13 @@ package register
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	userEntityPackage "personal-secretary-user-ap/internal/entity/user"
 	"personal-secretary-user-ap/internal/service/logger"
+	"personal-secretary-user-ap/internal/service/request/user/register"
 	"personal-secretary-user-ap/internal/service/user"
 )
 
 const (
-	RegisterHandlerLogTag = "API_REGISTER_HANDLER"
+	logTag = "API_USER_REGISTER"
 )
 
 type registerRequest struct {
@@ -23,32 +23,27 @@ func Register(context *gin.Context) {
 
 	var request registerRequest
 	if err := context.ShouldBindJSON(&request); err != nil {
-		loggerService.DebugWithLogTag("Failed to bind JSON: "+err.Error(), RegisterHandlerLogTag)
-		context.Status(http.StatusBadRequest)
+		loggerService.DebugWithLogTag("Failed to bind JSON: "+err.Error(), logTag)
+		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid_input"})
 		return
 	}
 
-	registeredUser, err := user.GetUserService().Register(user.RegisterUserRequest{
+	result, err := register.RegisterUser(user.RegisterUserRequest{
 		Email:    request.Email,
 		Name:     request.Name,
 		Password: request.Password,
 	})
 
 	if nil != err {
-		loggerService.DebugWithLogTag("Failed to register user: "+err.Error(), RegisterHandlerLogTag)
-
-		response, err := user.ConvertRegisterUserResponseErrorToDto(err)
-		if nil != err {
-			loggerService.FatalWithLogTag("Failed to convert register user error to DTO: "+err.Error(), RegisterHandlerLogTag)
-			context.Status(http.StatusInternalServerError)
-			return
-		}
-
-		context.JSON(http.StatusUnprocessableEntity, response)
-
+		loggerService.DebugWithLogTag("Failed to register user: "+err.Error(), logTag)
+		context.Status(http.StatusInternalServerError)
 		return
 	}
 
-	dto := userEntityPackage.ConvertUserToDTo(registeredUser)
-	context.JSON(http.StatusOK, dto)
+	if result.Success {
+		context.JSON(http.StatusOK, result.SuccessResponse)
+		return
+	}
+
+	context.JSON(http.StatusUnprocessableEntity, result.ErrorResponse)
 }

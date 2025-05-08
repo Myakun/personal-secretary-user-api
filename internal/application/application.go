@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/joho/godotenv"
 	"log"
-	"personal-secretary-user-ap/internal/entity/accesstoken"
 	"personal-secretary-user-ap/internal/entity/user"
 	"personal-secretary-user-ap/internal/service/logger"
 	appUser "personal-secretary-user-ap/internal/service/user"
@@ -84,7 +83,6 @@ func GetInstance(envFile *string) (*application, error) {
 		}
 
 		// Initialize entity services
-		accesstoken.InitAccessTokenService(appResources.mongo.Database)
 		user.InitUserService(appResources.mongo.Database)
 
 		// Initialize app services
