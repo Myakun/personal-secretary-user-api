@@ -12,6 +12,7 @@ var userServiceInstance *userService
 var initUserServiceOnce sync.Once
 
 type userService struct {
+	loggerService  *logger.Logger
 	userRepository *userRepository
 	userValidator  *userValidator
 }
@@ -24,27 +25,27 @@ func ConvertUserToDTo(user *User) *UserDTO {
 	}
 }
 
-func (service *userService) CreateUser(user *User) (*User, error) {
-	err := service.userValidator.Validate(user)
+func (service *userService) CreateUser(entity *User) (*User, error) {
+	err := service.userValidator.Validate(entity)
 	if nil != err {
 		return nil, err
 	}
 
-	passwordHash, err := service.HashPassword(user.GetPassword())
+	passwordHash, err := service.HashPassword(entity.GetPassword())
 	if nil != err {
 		return nil, fmt.Errorf("failed to hash password: %w", err)
 	}
 
-	user.SetPassword(passwordHash)
+	entity.SetPassword(passwordHash)
 
-	user, err = service.userRepository.insert(user)
+	entity, err = service.userRepository.insert(entity)
 	if nil != err {
 		return nil, fmt.Errorf("failed to create user: %w", err)
 	}
 
-	user.setIsInserted(true)
+	entity.setIsInserted(true)
 
-	return user, nil
+	return entity, nil
 }
 
 func (service *userService) FindOneByEmail(email string) (*User, error) {
@@ -90,11 +91,13 @@ func GetUserService() *userService {
 func InitUserService(db *mongo.Database) {
 	initUserServiceOnce.Do(func() {
 		InitUserValidator(logger.GetLoggerService())
+		loggerService := logger.GetLoggerService()
 
 		userServiceInstance = &userService{
+			loggerService: loggerService,
 			userRepository: &userRepository{
 				collection:    db.Collection(TableName),
-				loggerService: logger.GetLoggerService(),
+				loggerService: loggerService,
 			},
 			userValidator: GetUserValidator(),
 		}

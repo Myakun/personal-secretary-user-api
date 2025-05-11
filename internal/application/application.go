@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/joho/godotenv"
 	"log"
+	"personal-secretary-user-ap/internal/entity/jwtrefreshtoken"
 	"personal-secretary-user-ap/internal/entity/user"
 	"personal-secretary-user-ap/internal/service/logger"
 	appUser "personal-secretary-user-ap/internal/service/user"
@@ -82,11 +83,12 @@ func GetInstance(envFile *string) (*application, error) {
 			resources: appResources,
 		}
 
-		// Initialize entity services
+		// Entity services
+		jwtrefreshtoken.InitJwtRefreshTokenService(appResources.mongo.Database)
 		user.InitUserService(appResources.mongo.Database)
 
-		// Initialize app services
-		appUser.InitUserService()
+		// App services
+		appUser.InitUserService(appConfig.JWT.ExpirationMin, appConfig.JWT.Secret)
 	})
 
 	return applicationInstance, getInstanceError

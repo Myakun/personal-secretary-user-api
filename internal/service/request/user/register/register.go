@@ -6,6 +6,7 @@ import (
 	"personal-secretary-user-ap/internal/common/entity"
 	userEntityPackage "personal-secretary-user-ap/internal/entity/user"
 	"personal-secretary-user-ap/internal/service/logger"
+	"personal-secretary-user-ap/internal/service/request/user/login"
 	"personal-secretary-user-ap/internal/service/user"
 )
 
@@ -27,6 +28,7 @@ type registerUserResult struct {
 }
 
 type SuccessResponse struct {
+	Token        string                     `json:"token"`
 	RefreshToken string                     `json:"refresh_token"`
 	User         *userEntityPackage.UserDTO `json:"user"`
 }
@@ -34,7 +36,7 @@ type SuccessResponse struct {
 func RegisterUser(request user.RegisterUserRequest) (*registerUserResult, error) {
 	loggerService := logger.GetLoggerService()
 
-	registeredUser, err := user.GetUserService().Register(user.RegisterUserRequest{
+	registeredUser, err := user.GetUserService().RegisterUser(user.RegisterUserRequest{
 		Email:    request.Email,
 		Name:     request.Name,
 		Password: request.Password,
@@ -68,15 +70,21 @@ func RegisterUser(request user.RegisterUserRequest) (*registerUserResult, error)
 		return nil, err
 	}
 
-	// For now, we'll use a placeholder for the refresh token
-	// In a real implementation, this would use the refresh token service
-	refreshToken := "placeholder-refresh-token"
+	loginResult, err := login.LoginUser(user.LoginUserRequest{
+		Email:    request.Email,
+		Password: request.Password,
+	})
+
+	if nil != err {
+		// TODO: handle error
+	}
 
 	return &registerUserResult{
 		Success: true,
 		SuccessResponse: &SuccessResponse{
 			User:         userEntityPackage.ConvertUserToDTo(registeredUser),
-			RefreshToken: refreshToken,
+			Token:        loginResult.SuccessResponse.Token,
+			RefreshToken: loginResult.SuccessResponse.RefreshToken,
 		},
 	}, nil
 }

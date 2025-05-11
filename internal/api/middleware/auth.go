@@ -54,7 +54,7 @@ func AuthMiddleware(jwtSecret string) gin.HandlerFunc {
 		}
 
 		// Set user information in the context
-		c.Set(UserIDKey, claims.UserID)
+		c.Set(UserIDKey, claims.UserId)
 		c.Set(EmailKey, claims.Email)
 
 		c.Next()

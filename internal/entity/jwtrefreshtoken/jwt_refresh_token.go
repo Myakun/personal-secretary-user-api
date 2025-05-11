@@ -4,32 +4,43 @@ import (
 	"time"
 )
 
-type RefreshToken struct {
-	createdAt time.Time
-	id        string
-	userId    string
-	token     string
+type JwtRefreshToken struct {
+	createdAt  time.Time
+	id         string
+	isInserted bool
+	userId     string
+	token      string
 }
 
-func NewRefreshToken(userId, token string) *RefreshToken {
-	return &RefreshToken{
-		userId: userId,
-		token:  token,
+func NewJwtRefreshToken(createdAt time.Time, token string, userId string) *JwtRefreshToken {
+	return &JwtRefreshToken{
+		createdAt:  createdAt,
+		isInserted: false,
+		token:      token,
+		userId:     userId,
 	}
 }
 
-func (r *RefreshToken) GetCreatedAt() time.Time {
-	return r.createdAt
+func (entity *JwtRefreshToken) GetCreatedAt() time.Time {
+	return entity.createdAt
 }
 
-func (r *RefreshToken) GetId() string {
-	return r.id
+func (entity *JwtRefreshToken) GetId() string {
+	return entity.id
 }
 
-func (r *RefreshToken) GetUserId() string {
-	return r.userId
+func (entity *JwtRefreshToken) GetUserId() string {
+	return entity.userId
 }
 
-func (r *RefreshToken) GetToken() string {
-	return r.token
+func (entity *JwtRefreshToken) GetToken() string {
+	return entity.token
+}
+
+func (entity *JwtRefreshToken) IsInserted() bool {
+	return entity.isInserted
+}
+
+func (entity *JwtRefreshToken) setIsInserted(isInserted bool) {
+	entity.isInserted = isInserted
 }

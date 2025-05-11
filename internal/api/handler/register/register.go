@@ -24,7 +24,7 @@ func Register(context *gin.Context) {
 	var request registerRequest
 	if err := context.ShouldBindJSON(&request); err != nil {
 		loggerService.DebugWithLogTag("Failed to bind JSON: "+err.Error(), logTag)
-		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid_input"})
+		context.Status(http.StatusBadRequest)
 		return
 	}
 
@@ -35,7 +35,7 @@ func Register(context *gin.Context) {
 	})
 
 	if nil != err {
-		loggerService.DebugWithLogTag("Failed to register user: "+err.Error(), logTag)
+		loggerService.FatalWithLogTag("Failed to register user: "+err.Error(), logTag)
 		context.Status(http.StatusInternalServerError)
 		return
 	}

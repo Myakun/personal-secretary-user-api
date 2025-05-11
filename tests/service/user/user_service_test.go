@@ -22,7 +22,7 @@ func TestRegister_Success(t *testing.T) {
 		Password: password,
 	}
 
-	user, err := service.Register(request)
+	user, err := service.RegisterUser(request)
 
 	assert.NoError(t, err)
 	assert.NotNil(t, user)
@@ -51,14 +51,14 @@ func TestRegister_DuplicateEmail(t *testing.T) {
 		Password: password,
 	}
 
-	firstUser, err := service.Register(request)
+	firstUser, err := service.RegisterUser(request)
 	require.NoError(t, err)
 	require.NotNil(t, firstUser)
 
 	request.Name = "Another User"
 	request.Password = "anotherpassword"
 
-	secondUser, err := service.Register(request)
+	secondUser, err := service.RegisterUser(request)
 
 	assert.Error(t, err)
 	assert.Nil(t, secondUser)
@@ -74,7 +74,7 @@ func TestRegister_InvalidEmail(t *testing.T) {
 		Password: "password123",
 	}
 
-	user, err := service.Register(request)
+	user, err := service.RegisterUser(request)
 
 	// Assert
 	assert.Error(t, err)
@@ -91,7 +91,7 @@ func TestRegister_InvalidPassword(t *testing.T) {
 		Password: "12345",
 	}
 
-	user, err := service.Register(request)
+	user, err := service.RegisterUser(request)
 
 	assert.Error(t, err)
 	assert.Nil(t, user)

@@ -2,4 +2,6 @@
 .idea/
 .git
 .env
+.env.test
 docker-compose-local.yml
+coverage.out

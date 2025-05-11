@@ -14,17 +14,17 @@ var (
 
 // Claims represents the JWT claims
 type Claims struct {
-	UserID string `json:"user_id"`
+	UserId string `json:"user_id"`
 	Email  string `json:"email"`
 	jwt.RegisteredClaims
 }
 
 // GenerateToken generates a new JWT token for a user
-func GenerateToken(userID, email, secret string, expirationMinutes int) (string, error) {
+func GenerateToken(userId, email, secret string, expirationMinutes int) (string, error) {
 	expirationTime := time.Now().Add(time.Duration(expirationMinutes) * time.Minute)
 
 	claims := &Claims{
-		UserID: userID,
+		UserId: userId,
 		Email:  email,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expirationTime),
