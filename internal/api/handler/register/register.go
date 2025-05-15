@@ -3,9 +3,9 @@ package register
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"personal-secretary-user-ap/internal/service/logger"
-	"personal-secretary-user-ap/internal/service/request/user/register"
+	"personal-secretary-user-ap/internal/presentation/user/register"
 	"personal-secretary-user-ap/internal/service/user"
+	"personal-secretary-user-ap/pkg/logger"
 )
 
 const (

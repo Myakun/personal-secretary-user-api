@@ -6,8 +6,8 @@ import (
 	"log"
 	"personal-secretary-user-ap/internal/entity/jwtrefreshtoken"
 	"personal-secretary-user-ap/internal/entity/user"
-	"personal-secretary-user-ap/internal/service/logger"
 	appUser "personal-secretary-user-ap/internal/service/user"
+	"personal-secretary-user-ap/pkg/logger"
 	"sync"
 )
 

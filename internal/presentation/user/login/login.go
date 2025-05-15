@@ -3,8 +3,8 @@ package login
 import (
 	"errors"
 	"fmt"
-	"personal-secretary-user-ap/internal/service/logger"
 	"personal-secretary-user-ap/internal/service/user"
+	"personal-secretary-user-ap/pkg/logger"
 )
 
 const (

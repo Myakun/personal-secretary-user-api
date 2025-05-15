@@ -1,7 +1,7 @@
 name: personal-secretary-user-api-test
 
 networks:
-  my-network:
+  shared-network:
     external: true
 
 services:
@@ -13,7 +13,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${APP_MONGO_PASSWORD}
       MONGO_INITDB_DATABASE: ${APP_MONGO_DATABASE}
     networks:
-      - my-network
+      - shared-network
     ports:
       - "${APP_MONGO_PORT_APP:-27017}:27017"
     volumes:

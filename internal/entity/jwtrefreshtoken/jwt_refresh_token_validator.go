@@ -1,7 +1,7 @@
 package jwtrefreshtoken
 
 import (
-	"personal-secretary-user-ap/internal/service/logger"
+	"personal-secretary-user-ap/pkg/logger"
 	"sync"
 )
 

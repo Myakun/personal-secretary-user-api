@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/crypto/bcrypt"
-	"personal-secretary-user-ap/internal/service/logger"
+	"personal-secretary-user-ap/pkg/logger"
 	"sync"
 )
 

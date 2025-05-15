@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"personal-secretary-user-ap/internal/service/logger"
+	"personal-secretary-user-ap/pkg/logger"
 )
 
 // CustomResponseWriter captures the response body

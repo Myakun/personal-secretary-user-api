@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"personal-secretary-user-ap/internal/common/entity"
 	userEntityPackage "personal-secretary-user-ap/internal/entity/user"
-	"personal-secretary-user-ap/internal/service/logger"
-	"personal-secretary-user-ap/internal/service/request/user/login"
+	"personal-secretary-user-ap/internal/presentation/user/login"
 	"personal-secretary-user-ap/internal/service/user"
+	"personal-secretary-user-ap/pkg/logger"
 )
 
 const (

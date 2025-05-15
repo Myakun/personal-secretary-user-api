@@ -7,7 +7,7 @@ import (
 	"personal-secretary-user-ap/internal/common/validator"
 	"personal-secretary-user-ap/internal/entity/jwtrefreshtoken"
 	userEntityPackage "personal-secretary-user-ap/internal/entity/user"
-	"personal-secretary-user-ap/internal/service/logger"
+	"personal-secretary-user-ap/pkg/logger"
 	"sync"
 )
 

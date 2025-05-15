@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"personal-secretary-user-ap/internal/common/entity"
 	commonValidator "personal-secretary-user-ap/internal/common/validator"
-	"personal-secretary-user-ap/internal/service/logger"
+	"personal-secretary-user-ap/pkg/logger"
 	"sync"
 )
 
