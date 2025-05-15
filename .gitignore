@@ -5,3 +5,5 @@
 .env.test
 docker-compose-local.yml
 coverage.out
+todo.txt
+changes.txt

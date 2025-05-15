@@ -1,7 +1,7 @@
 package user
 
 import (
-	"personal-secretary-user-ap/tests"
+	"github.com/Myakun/personal-secretary-user-api/tests"
 	"testing"
 )
 

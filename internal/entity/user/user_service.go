@@ -2,10 +2,12 @@ package user
 
 import (
 	"fmt"
+	"sync"
+
+	"github.com/Myakun/personal-secretary-user-api/pkg/logger"
+
 	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/crypto/bcrypt"
-	"personal-secretary-user-ap/pkg/logger"
-	"sync"
 )
 
 var userServiceInstance *userService

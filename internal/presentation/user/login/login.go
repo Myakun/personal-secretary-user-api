@@ -3,8 +3,9 @@ package login
 import (
 	"errors"
 	"fmt"
-	"personal-secretary-user-ap/internal/service/user"
-	"personal-secretary-user-ap/pkg/logger"
+
+	"github.com/Myakun/personal-secretary-user-api/internal/service/user"
+	"github.com/Myakun/personal-secretary-user-api/pkg/logger"
 )
 
 const (

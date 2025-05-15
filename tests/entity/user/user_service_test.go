@@ -1,11 +1,12 @@
 package user
 
 import (
+	userEntity "github.com/Myakun/personal-secretary-user-api/internal/entity/user"
+	"testing"
+
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	userEntity "personal-secretary-user-ap/internal/entity/user"
-	"testing"
 )
 
 func TestConvertUserToDTo(t *testing.T) {

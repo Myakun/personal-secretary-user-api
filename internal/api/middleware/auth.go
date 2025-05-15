@@ -5,8 +5,9 @@ import (
 	"net/http"
 	"strings"
 
+	jwtPkg "github.com/Myakun/personal-secretary-user-api/internal/common/jwt"
+
 	"github.com/gin-gonic/gin"
-	jwtPkg "personal-secretary-user-ap/internal/common/jwt"
 )
 
 // UserContext keys

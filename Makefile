@@ -16,3 +16,12 @@ docker-rebuild-test:
 go-tool-coverage:
 	go test -coverpkg=./internal/... -coverprofile=coverage.out ./...
 	go tool cover -html=coverage.out
+
+lint:
+	golangci-lint run ./...
+
+optimize-imports:
+	goimports -w cmd internal pkg
+
+vet:
+	go vet ./...

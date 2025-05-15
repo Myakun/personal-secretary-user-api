@@ -3,12 +3,13 @@ package user
 import (
 	"errors"
 	"fmt"
-	"personal-secretary-user-ap/internal/common/jwt"
-	"personal-secretary-user-ap/internal/common/validator"
-	"personal-secretary-user-ap/internal/entity/jwtrefreshtoken"
-	userEntityPackage "personal-secretary-user-ap/internal/entity/user"
-	"personal-secretary-user-ap/pkg/logger"
 	"sync"
+
+	"github.com/Myakun/personal-secretary-user-api/internal/common/jwt"
+	"github.com/Myakun/personal-secretary-user-api/internal/common/validator"
+	"github.com/Myakun/personal-secretary-user-api/internal/entity/jwtrefreshtoken"
+	userEntityPackage "github.com/Myakun/personal-secretary-user-api/internal/entity/user"
+	"github.com/Myakun/personal-secretary-user-api/pkg/logger"
 )
 
 var (

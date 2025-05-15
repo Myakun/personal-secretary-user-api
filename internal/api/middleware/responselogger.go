@@ -3,8 +3,10 @@ package middleware
 import (
 	"bytes"
 	"fmt"
+
+	"github.com/Myakun/personal-secretary-user-api/pkg/logger"
+
 	"github.com/gin-gonic/gin"
-	"personal-secretary-user-ap/pkg/logger"
 )
 
 // CustomResponseWriter captures the response body

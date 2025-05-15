@@ -1,11 +1,12 @@
-package application
+package config
 
 import (
-	"github.com/kelseyhightower/envconfig"
 	"strings"
+
+	"github.com/kelseyhightower/envconfig"
 )
 
-type config struct {
+type Config struct {
 	Api struct {
 		Port int `envconfig:"APP_API_PORT" required:"true"`
 	}
@@ -26,17 +27,14 @@ type config struct {
 	}
 }
 
-//goland:noinspection GoExportedFuncWithUnexportedType
-func configFromEnv() (*config, error) {
-	var config config
-
+func LoadFromEnv() (*Config, error) {
+	var config Config
 	err := envconfig.Process("", &config)
 	if err != nil {
 		return nil, err
 	}
 
 	config.Env = strings.ToLower(config.Env)
-	//config.Log.Level = strings.ToLower(config.Log.Level)
 
 	return &config, nil
 }

@@ -1,9 +1,10 @@
 package user
 
 import (
-	"github.com/stretchr/testify/assert"
-	userEntity "personal-secretary-user-ap/internal/entity/user"
+	userEntity "github.com/Myakun/personal-secretary-user-api/internal/entity/user"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNewUser(t *testing.T) {

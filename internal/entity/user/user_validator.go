@@ -3,10 +3,11 @@ package user
 import (
 	"errors"
 	"fmt"
-	"personal-secretary-user-ap/internal/common/entity"
-	commonValidator "personal-secretary-user-ap/internal/common/validator"
-	"personal-secretary-user-ap/pkg/logger"
 	"sync"
+
+	"github.com/Myakun/personal-secretary-user-api/internal/common/entity"
+	commonValidator "github.com/Myakun/personal-secretary-user-api/internal/common/validator"
+	"github.com/Myakun/personal-secretary-user-api/pkg/logger"
 )
 
 var userValidatorInstance *userValidator

@@ -4,10 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
+
+	"github.com/Myakun/personal-secretary-user-api/pkg/logger"
+
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/mongo"
-	"personal-secretary-user-ap/pkg/logger"
-	"time"
 )
 
 type jwtRefreshTokenRaw struct {

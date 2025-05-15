@@ -1,11 +1,13 @@
 package register
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
-	"personal-secretary-user-ap/internal/presentation/user/register"
-	"personal-secretary-user-ap/internal/service/user"
-	"personal-secretary-user-ap/pkg/logger"
+
+	"github.com/Myakun/personal-secretary-user-api/internal/presentation/user/register"
+	"github.com/Myakun/personal-secretary-user-api/internal/service/user"
+	"github.com/Myakun/personal-secretary-user-api/pkg/logger"
+
+	"github.com/gin-gonic/gin"
 )
 
 const (

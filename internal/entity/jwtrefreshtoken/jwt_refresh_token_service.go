@@ -2,11 +2,13 @@ package jwtrefreshtoken
 
 import (
 	"fmt"
-	"github.com/google/uuid"
-	"go.mongodb.org/mongo-driver/mongo"
-	"personal-secretary-user-ap/pkg/logger"
 	"sync"
 	"time"
+
+	"github.com/Myakun/personal-secretary-user-api/pkg/logger"
+
+	"github.com/google/uuid"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 var jwtRefreshTokenServiceInstance *jwtRefreshTokenService

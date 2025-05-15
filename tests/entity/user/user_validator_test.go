@@ -1,13 +1,14 @@
 package user
 
 import (
+	"github.com/Myakun/personal-secretary-user-api/internal/common/entity"
+	userEntity "github.com/Myakun/personal-secretary-user-api/internal/entity/user"
+	"strings"
+	"testing"
+
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"personal-secretary-user-ap/internal/common/entity"
-	userEntity "personal-secretary-user-ap/internal/entity/user"
-	"strings"
-	"testing"
 )
 
 func TestValidateName(t *testing.T) {

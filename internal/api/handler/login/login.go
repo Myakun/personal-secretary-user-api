@@ -1,11 +1,13 @@
 package login
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
-	loginService "personal-secretary-user-ap/internal/presentation/user/login"
-	"personal-secretary-user-ap/internal/service/user"
-	"personal-secretary-user-ap/pkg/logger"
+
+	loginService "github.com/Myakun/personal-secretary-user-api/internal/presentation/user/login"
+	"github.com/Myakun/personal-secretary-user-api/internal/service/user"
+	"github.com/Myakun/personal-secretary-user-api/pkg/logger"
+
+	"github.com/gin-gonic/gin"
 )
 
 const (

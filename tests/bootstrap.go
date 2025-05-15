@@ -1,9 +1,9 @@
 package tests
 
 import (
+	"github.com/Myakun/personal-secretary-user-api/internal/application"
 	"os"
 	"path/filepath"
-	"personal-secretary-user-ap/internal/application"
 	"runtime"
 	"testing"
 )

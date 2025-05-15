@@ -1,8 +1,9 @@
 package jwtrefreshtoken
 
 import (
-	"personal-secretary-user-ap/pkg/logger"
 	"sync"
+
+	"github.com/Myakun/personal-secretary-user-api/pkg/logger"
 )
 
 var jwtRefreshTokenValidatorInstance *jwtRefreshTokenValidator
