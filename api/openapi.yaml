@@ -1,0 +1,94 @@
+openapi: 3.0.3
+info:
+  title: Personal Secretary User API
+  description: API for user management in the Personal Secretary application
+  version: 1.0.0
+  
+servers:
+  - url: http://localhost:60000
+    description: Local development server
+  - url: https://dev-api.personal-secretary.com
+    description: Development server
+  - url: https://api.personal-secretary.com
+    description: Production server
+
+paths:
+  /v1/register:
+    post:
+      summary: Register a new user
+      description: Creates a new user account with the provided email, name, and password
+      operationId: registerUser
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterUserRequest'
+      responses:
+        '200':
+          description: User successfully registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: Bad request - Invalid input format
+        '422':
+          description: Unprocessable entity - Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    RegisterUserRequest:
+      type: object
+      required:
+        - email
+        - name
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: user@example.com
+        name:
+          type: string
+          description: User's full name
+          example: John Doe
+        password:
+          type: string
+          format: password
+          description: User's password
+          example: securePassword123
+    
+    SuccessResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT access token
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        refresh_token:
+          type: string
+          description: JWT refresh token
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+    
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error code
+          enum:
+            - email_exists
+            - invalid_email
+            - invalid_name
+            - invalid_password
+          example: email_exists

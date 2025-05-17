@@ -2,7 +2,8 @@ package user
 
 import (
 	userEntity "github.com/Myakun/personal-secretary-user-api/internal/entity/user"
-	userService "github.com/Myakun/personal-secretary-user-api/internal/service/user"
+	userService "github.com/Myakun/personal-secretary-user-api/internal/usecase/user"
+
 	"testing"
 
 	"github.com/brianvoe/gofakeit/v6"

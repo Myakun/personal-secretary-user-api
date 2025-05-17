@@ -1,7 +1,8 @@
 package user
 
 import (
-	userService "github.com/Myakun/personal-secretary-user-api/internal/service/user"
+	userService "github.com/Myakun/personal-secretary-user-api/internal/usecase/user"
+
 	"testing"
 
 	"github.com/brianvoe/gofakeit/v6"

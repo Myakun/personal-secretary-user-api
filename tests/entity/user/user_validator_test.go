@@ -1,11 +1,10 @@
 package user
 
 import (
-	"github.com/Myakun/personal-secretary-user-api/internal/common/entity"
-	userEntity "github.com/Myakun/personal-secretary-user-api/internal/entity/user"
 	"strings"
 	"testing"
 
+	userEntity "github.com/Myakun/personal-secretary-user-api/internal/entity/user"
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -50,7 +49,7 @@ func TestValidateEmail_InvalidFormat(t *testing.T) {
 	assert.Error(t, err)
 
 	// Check if it's a validation error
-	var validationErr *entity.ValidationError
+	var validationErr *validator.ValidationError
 	assert.ErrorAs(t, err, &validationErr)
 	assert.Equal(t, userEntity.ValidationErrorInvalidEmail.Error(), validationErr.Error())
 }
@@ -66,7 +65,7 @@ func TestValidateEmail_AlreadyExists(t *testing.T) {
 	name := "Test User"
 	password := "password123"
 
-	// Create first user
+	// Save first user
 	firstUser := userEntity.NewUser(email, "", name, password)
 	createdFirstUser, err := service.CreateUser(firstUser)
 	require.NoError(t, err)
@@ -82,7 +81,7 @@ func TestValidateEmail_AlreadyExists(t *testing.T) {
 	assert.Error(t, err)
 
 	// Check if it's a validation error
-	var validationErr *entity.ValidationError
+	var validationErr *validator.ValidationError
 	assert.ErrorAs(t, err, &validationErr)
 	assert.Equal(t, userEntity.ValidationErrorEmailAlreadyExists.Error(), validationErr.Error())
 }

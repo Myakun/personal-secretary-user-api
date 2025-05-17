@@ -1,10 +1,11 @@
 package login
 
+/*
 import (
 	"errors"
 	"fmt"
 
-	"github.com/Myakun/personal-secretary-user-api/internal/service/user"
+	"github.com/Myakun/personal-secretary-user-api/internal/usecase/user"
 	"github.com/Myakun/personal-secretary-user-api/pkg/logger"
 )
 
@@ -15,7 +16,7 @@ const (
 )
 
 type ErrorResponse struct {
-	Error string `json:"error"`
+	Err string `json:"error"`
 }
 
 type loginUserResult struct {
@@ -26,7 +27,7 @@ type loginUserResult struct {
 
 func NewLoginUserResultWithErrorResponse(error string) *loginUserResult {
 	return &loginUserResult{
-		ErrorResponse: &ErrorResponse{Error: error},
+		ErrorResponse: &ErrorResponse{Err: error},
 		Success:       false,
 	}
 }
@@ -42,7 +43,7 @@ func LoginUser(request user.LoginUserRequest) (*loginUserResult, error) {
 	loginResult, err := user.GetUserService().LoginUser(request)
 
 	if nil != err {
-		loggerService.DebugWithLogTag("Failed to login user: "+err.Error(), loginUserLogTag)
+		loggerService.DebugWithLogTag("Failed to login user: "+err.Err(), loginUserLogTag)
 
 		var loginError *user.LoginError
 		if errors.As(err, &loginError) {
@@ -72,3 +73,4 @@ func LoginUser(request user.LoginUserRequest) (*loginUserResult, error) {
 		},
 	}, nil
 }
+*/
